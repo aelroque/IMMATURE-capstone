@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Container } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { Link } from "react-router-dom";
 
 function ProductSearch() {
     const [products, setProducts] = useState([])
@@ -39,6 +40,12 @@ function ProductSearch() {
               ))}
           </ul>
         </div>
+        <Button>
+          <Link to="/products">Stocks</Link>
+        </Button>
+        <Button>
+          <Link to="/dashboard">Dashboard</Link>
+        </Button>
       </Container>
     );
 }
