@@ -2,9 +2,11 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import UploadImage from '../../uploadImage';
 
 export default function AddProduct() {
+
   const [pname, setPname] = useState('');
   const [instock, setInstock] = useState('');
   const [uprice, setUprice] = useState('');
@@ -14,11 +16,10 @@ export default function AddProduct() {
   const [brand, setBrand] = useState('');
   const [descript, setDescript] = useState('');
 
-  const [success, setSuccess] = useState('');
   const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
-    setSuccess(true);
+    //setSuccess(true);
     setPname('');
     setInstock('');
     setUprice('');
@@ -28,9 +29,8 @@ export default function AddProduct() {
     setBrand('');
     setDescript('');
   }, []);
-  //pname, instock, uprice, srp, uom, category, brand, descript
 
-  const createHandler = async (e) => {
+  const createHandler = async(e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
@@ -52,6 +52,7 @@ export default function AddProduct() {
       );
       console.log(response);
       //navigate('/products/add');
+      window.location = '/products/add'; //refresh the page
     } catch (err) {
       if (!err?.response) {
         setErrMsg('No Server Response');
@@ -73,7 +74,10 @@ export default function AddProduct() {
         <Form onSubmit={createHandler}>
           <Form.Group className="mb-3" controlId="pname">
             <Form.Label>Product Name</Form.Label>
-            <Form.Control onChange={(e) => setPname(e.target.value)} required />
+            <Form.Control onChange={(e) => setPname(e.target.value)} required className='text-capitalize' />
+            {/* <Button onClick={handleClearName} type="clear">
+              Clear
+            </Button> */}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="brand">
@@ -135,10 +139,20 @@ export default function AddProduct() {
             />
           </Form.Group>
 
+          <Form.Group className="UploadImage" controlId="image">
+            <Form.Label>Upload Image here</Form.Label>
+            <Form.Control
+              type="file"
+              // required
+              //onChange={(e) => SetImage(e.target.value)}
+              onClick={UploadImage}
+            />
+          </Form.Group>
+
           <div className="mb-3">
-            <Button type="submit">Add Product</Button>
+            <Button type="submit">Add to List</Button>
             <Button>
-              <Link to="/products">Featured Products</Link>
+              <Link to="/products">Stocks</Link>
             </Button>
             <Button>
               <Link to="/dashboard">Dashboard</Link>
