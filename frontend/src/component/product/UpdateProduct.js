@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal} from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -9,18 +9,20 @@ const UpdateProduct = ({ product, pid }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [updatedPname, setUpdatedPname] = useState([product.pname]);
-  const [updatedCategory, setUpdatedCategory] = useState([product.category]);
-  const [updatedBrand, setUpdatedBrand] = useState([product.brand]);
+  const [updatedPname, setUpdatedPname] = useState(product.pname);
+  const [updatedCategory, setUpdatedCategory] = useState(product.category);
+  const [updatedBrand, setUpdatedBrand] = useState(product.brand);
 
   const [errMsg, setErrMsg] = useState('');
 
   const editProduct = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.put(
         `http://localhost:8000/products/update/${product.pid}`,
-        JSON.stringify({
+        JSON.stringify(
+        {
           pname: updatedPname,
           category: updatedCategory,
           brand: updatedBrand,
@@ -30,12 +32,7 @@ const UpdateProduct = ({ product, pid }) => {
           //withCredentials: true
         }
       );
-      console.log(updatedBrand);
-      console.log(updatedCategory);
-      console.log(updatedPname);
-      console.log(response);
       toast.success('Updated Successfully');
-      window.location = '/products/update'; //refresh the page
     } catch (err) {
       if (!err?.response) {
         setErrMsg('No Server Response');
@@ -64,8 +61,9 @@ const UpdateProduct = ({ product, pid }) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Edit Product {product.pid}</Modal.Title>
+          <Modal.Title>Edit Product</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
           <Form onSubmit={(e) => editProduct(e)} controlledid={product.pid}>
             <Form.Group className="mb-3" controlledid="updatedPname">
@@ -73,7 +71,7 @@ const UpdateProduct = ({ product, pid }) => {
               <Form.Control
                 type="updatedPname"
                 defaultValue={updatedPname}
-                onChange={(e) => setUpdatedPname(e.target.value)}
+                onChange={(e) => setUpdatedPname(e.target.value)} 
               />
             </Form.Group>
 
@@ -95,74 +93,12 @@ const UpdateProduct = ({ product, pid }) => {
               />
             </Form.Group>
 
-            {/*<Form.Group className="mb-3" controlledid="instock">
-            <Form.Label>Count In Stock</Form.Label>
-            <Form.Control
-              type="instock"
-              required
-              defaultValue={product.instock } 
-              onChange={(e) => setInstock(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlledid="uprice">
-            <Form.Label>U. Price</Form.Label>
-            <Form.Control
-              type="uprice"
-              required
-              defaultValue={product.uprice } 
-              onChange={(e) => setUprice(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlledid="srp">
-            <Form.Label>Selling Price</Form.Label>
-            <Form.Control
-              type="srp"
-              required
-              defaultValue={product.srp} 
-              onChange={(e) => setSrp(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlledid="uom">
-            <Form.Label>Unit Measure</Form.Label>
-            <Form.Control
-              type="uom"
-              required
-              defaultValue={product.uom} 
-              onChange={(e) => setUom(e.target.value)}
-            />
-          </Form.Group>
-
-
-
-          <Form.Group className="mb-3" controlledid="descript">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              type="descript"
-              required
-              defaultValue={product. descript} 
-              onChange={(e) => setDescript(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="UploadImage" controlledid="image">
-            <Form.Label>Upload Image here</Form.Label>
-            <Form.Control
-              type="file"
-              // required
-              //onChange={(e) => SetImage(e.target.value)}
-              onClick={UploadImage}
-            />
-          </Form.Group> */}
             <Modal.Footer>
+              <Button type="submit">Update</Button>
               <Button className="btn btn-secondary" onClick={handleClose}>
-                Close
+                Back
               </Button>
             </Modal.Footer>
-
-            <Button type="submit">Update</Button>
           </Form>
         </Modal.Body>
       </Modal>
