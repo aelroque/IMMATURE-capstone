@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import EditUser from './EditUser';
 
 function UserProfile() {
   const [profiles, setProfiles] = useState([]);
@@ -18,13 +19,13 @@ function UserProfile() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Suppliers</title>
-          </Helmet>
-          
+        <title>Users</title>
+      </Helmet>
+
       <table className="table">
         <thead>
           <tr>
-            <th>Code</th>
+            <th>Emp ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -41,6 +42,9 @@ function UserProfile() {
               <td>{profile.email}</td>
               <td>{profile.contactno}</td>
               <td>{profile.username}</td>
+              <td>
+                <EditUser profile={profile} id={`${profile.user_id}`} />
+              </td>
             </tr>
           ))}
         </tbody>
